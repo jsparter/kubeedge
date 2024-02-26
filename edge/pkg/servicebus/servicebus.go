@@ -133,6 +133,8 @@ func processMessage(msg *beehiveModel.Message) {
 		if dao.IsTableEmpty() {
 			c <- struct{}{}
 		}
+		// wfq：这里添加不了动作，第121行排除掉了掉线消息
+		// wfq: 如果要在这里加逻辑，121行之前要单独判断一下source，单独过滤一下这条消息
 	default:
 		r := strings.Split(resource, ":")
 		if len(r) != 2 {

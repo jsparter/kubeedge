@@ -96,6 +96,9 @@ func run(config *hollowEdgeNodeConfig) {
 
 	// start all modules
 	core.Run()
+
+	// wfq: 下面这里应该就是可以开始添加设备数据的地方，前提是要保证云端有对应的device和devicemodel
+
 }
 
 func (c *hollowEdgeNodeConfig) addFlags(fs *pflag.FlagSet) {

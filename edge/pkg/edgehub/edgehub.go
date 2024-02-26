@@ -19,7 +19,7 @@ import (
 	"github.com/kubeedge/kubeedge/pkg/apis/componentconfig/edgecore/v1alpha2"
 )
 
-//EdgeHub defines edgehub object structure
+// EdgeHub defines edgehub object structure
 type EdgeHub struct {
 	certManager   certificate.CertManager
 	chClient      clients.Adapter
@@ -61,22 +61,22 @@ func Register(eh *v1alpha2.EdgeHub, nodeName string) {
 	core.Register(newEdgeHub(eh.Enable))
 }
 
-//Name returns the name of EdgeHub module
+// Name returns the name of EdgeHub module
 func (eh *EdgeHub) Name() string {
 	return modules.EdgeHubModuleName
 }
 
-//Group returns EdgeHub group
+// Group returns EdgeHub group
 func (eh *EdgeHub) Group() string {
 	return modules.HubGroup
 }
 
-//Enable indicates whether this module is enabled
+// Enable indicates whether this module is enabled
 func (eh *EdgeHub) Enable() bool {
 	return eh.enable
 }
 
-//Start sets context and starts the controller
+// Start sets context and starts the controller
 func (eh *EdgeHub) Start() {
 	eh.certManager = certificate.NewCertManager(config.Config.EdgeHub, config.Config.NodeName)
 	eh.certManager.Start()
@@ -118,7 +118,7 @@ func (eh *EdgeHub) Start() {
 		// stop authinfo manager/websocket connection
 		<-eh.reconnectChan
 		eh.chClient.UnInit()
-
+		// wfq：断连发生的地方
 		// execute hook fun after disconnect
 		eh.pubConnectInfo(false)
 

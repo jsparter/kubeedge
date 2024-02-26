@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: hollow-edge-node
 spec:
-  replicas: {{numreplicas}}
+  replicas: 2
   selector:
     matchLabels:
       app: hollow-edge-node
@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
         - name: hollow-edgecore
-          image: {{edgemark_image_registry}}/edgemark:{{edgemark_image_tag}}
+          image: kubeedge/edgemark:v1.12.2
           command:
             - edgemark
           args:
             - --token=$(TOKEN)
             - --name=$(NODE_NAME)
-            - --http-server=https://{{server}}:10002
-            - --websocket-server={{server}}:10000
+            - --http-server=https://10.10.102.222:10002
+            - --websocket-server=10.10.102.222:10000
             - --alsologtostderr
             - --v=2
           env:

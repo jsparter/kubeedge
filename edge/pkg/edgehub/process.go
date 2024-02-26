@@ -195,7 +195,7 @@ func (eh *EdgeHub) pubConnectInfo(isConnected bool) {
 	if !isConnected {
 		content = connect.CloudDisconnected
 	}
-
+	// wfq：断联消息的发送，这里发送给了一些group，但是当前只有meta处理了这个opration，其他的组件需要添加对这个operation的处理方式
 	for _, group := range groupMap {
 		message := model.NewMessage("").BuildRouter(messagepkg.SourceNodeConnection, group,
 			messagepkg.ResourceTypeNodeConnection, messagepkg.OperationNodeConnection).FillBody(content)

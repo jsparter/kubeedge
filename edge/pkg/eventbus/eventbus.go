@@ -3,6 +3,7 @@ package eventbus
 import (
 	"encoding/json"
 	"fmt"
+	connect "github.com/kubeedge/kubeedge/edge/pkg/common/cloudconnection"
 	"os"
 
 	"github.com/astaxie/beego/orm"
@@ -115,6 +116,20 @@ func (eb *eventbus) pubCloudMsgToEdge() {
 		operation := accessInfo.GetOperation()
 		resource := accessInfo.GetResource()
 		switch operation {
+		// wfq: 在这里加也行，这样的话要自己定义一下topic
+		case messagepkg.OperationNodeConnection:
+			if msg := accessInfo.GetContent(); msg == connect.CloudDisconnected {
+				klog.Infof("Cloud-Edge connection is broken, publish info to data-governancer")
+				topic := fmt.Sprintf("$hw/events/node/%s/disconnect", eventconfig.Config.NodeName)
+				payload, _ := json.Marshal(msg)
+				eb.publish(topic, payload)
+			} else {
+				klog.Infof("Cloud-Edge reconnected, publish info to data-governancer")
+				topic := fmt.Sprintf("$hw/events/node/%s/reconnect", eventconfig.Config.NodeName)
+				payload, _ := json.Marshal(msg)
+				eb.publish(topic, payload)
+			}
+
 		case messagepkg.OperationSubscribe:
 			eb.subscribe(resource)
 			klog.Infof("Edge-hub-cli subscribe topic to %s", resource)

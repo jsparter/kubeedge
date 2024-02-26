@@ -107,6 +107,7 @@ func onSubConnect(client MQTT.Client) {
 	}
 }
 
+// wfq: 可能需要看一下之前mapper的代码，topic和payload的格式都是什么样
 // OnSubMessageReceived msg received callback
 func OnSubMessageReceived(client MQTT.Client, msg MQTT.Message) {
 	klog.Infof("OnSubMessageReceived receive msg from topic: %s", msg.Topic())
